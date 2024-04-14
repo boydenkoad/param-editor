@@ -40,8 +40,7 @@ export const ParamEditor: React.FC<Props> = (props) => {
   }
 
   return (
-    <div style={{ display: "flex" }}>
-      <div>
+    <div>
         {model.paramValues.map((pv) => (
           <div key={pv.paramId}>
 
@@ -67,7 +66,6 @@ export const ParamEditor: React.FC<Props> = (props) => {
 
           </div>
         ))}
-      </div>
     </div>
   );
 };
