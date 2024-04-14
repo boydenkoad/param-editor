@@ -35,7 +35,7 @@ export const ParamEditor: React.FC<Props> = (props) => {
     });
   }
 
-  function getModel() {
+  function getModel():Model {
     return { ...model };
   }
 
