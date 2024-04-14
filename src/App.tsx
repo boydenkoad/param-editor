@@ -1,26 +1,73 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface Param {
+  id: number;
+  name: string;
+  type: "string";
 }
 
-export default App;
+interface ParamValue {
+  paramId: number;
+  value: string;
+}
+
+interface Model {
+  paramValues: ParamValue[];
+}
+
+interface Props {
+  params: Param[];
+  model: Model;
+}
+
+export const ParamEditor: React.FC<Props> = (props) => {
+
+  const [params] = useState<Param[]>(props.params);
+  const [model, setModel] = useState<Model>(props.model);
+
+  function handleParamValueChange(paramId: number, value: string) {
+    setModel((prev) => {
+      return {
+        paramValues: prev.paramValues.map((pv) =>
+          pv.paramId === paramId ? { ...pv, value } : pv
+        ),
+      };
+    });
+  }
+
+  function getModel() {
+    return { ...model };
+  }
+
+  return (
+    <div style={{ display: "flex" }}>
+      <div>
+        {model.paramValues.map((pv) => (
+          <div key={pv.paramId}>
+
+            <label
+              style={{
+                width: 100,
+                textAlign: "center",
+                display: "inline-block",
+              }}
+              htmlFor={`${pv.paramId}`}
+            >
+              {params.find((el) => el.id === pv.paramId)?.name}
+            </label>
+
+            <input
+              type={params.find((el) => el.id === pv.paramId)?.type}
+              id={`${pv.paramId}`}
+              value={pv.value}
+              onChange={(ev) => {
+                handleParamValueChange(pv.paramId, ev.target.value);
+              }}
+            />
+
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
